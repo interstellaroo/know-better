@@ -8,12 +8,14 @@
 
 ARG NODE_VERSION=22.13.1
 
-FROM node:${NODE_VERSION}-alpine
+FROM mcr.microsoft.com/playwright:v1.52.0-jammy
 
 # Use production node environment by default.
 ENV NODE_ENV=development
 
 WORKDIR /usr/src/app
+
+
 
 # Download dependencies as a separate step to take advantage of Docker's caching.
 # Leverage a cache mount to /root/.npm to speed up subsequent builds.
