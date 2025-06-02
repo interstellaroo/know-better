@@ -5,6 +5,9 @@ import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/entities/user.entity';
 import { AnalyticsModule } from './analytics/analytics.module';
+import { AdminModule } from './admin/admin.module';
+import { HistoryModule } from './history/history.module';
+import { AnalyticsModule } from './analytics/analytics.module';
 
 
 
@@ -24,7 +27,7 @@ import { AnalyticsModule } from './analytics/analytics.module';
       }),
     }),
     UserModule, 
-    AuthModule, AnalyticsModule,
+    AuthModule, AnalyticsModule, HistoryModule, AdminModule,
   ],
   controllers: [],
   providers: [],
