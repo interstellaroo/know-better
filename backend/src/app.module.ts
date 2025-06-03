@@ -6,15 +6,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/entities/user.entity';
 import { AnalyticsModule } from './analytics/analytics.module';
 import { AdminModule } from './admin/admin.module';
-import { HistoryModule } from './history/history.module';
-import { AnalyticsModule } from './analytics/analytics.module';
-
-
+import { ResultModule } from './result/result.module';
+import { Result } from './result/entities/result.entity';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: './../.env',
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
@@ -23,11 +20,11 @@ import { AnalyticsModule } from './analytics/analytics.module';
         type: 'postgres',
         url: configService.getOrThrow('DATABASE_URL'),
         synchronize: true,
-        entities: [User],
+        entities: [User, Result],
       }),
     }),
     UserModule, 
-    AuthModule, AnalyticsModule, HistoryModule, AdminModule,
+    AuthModule, AnalyticsModule, AdminModule, ResultModule,
   ],
   controllers: [],
   providers: [],

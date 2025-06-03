@@ -1,4 +1,10 @@
-import { ConflictException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
@@ -21,8 +27,8 @@ export class UserService {
       });
       return await this.userRepository.save(newUser);
     } catch (error) {
-      if (error.code === 23505) {
-        throw new ConflictException('Credentials taken');
+      if (error.code === '23505') {
+        throw new ConflictException('Email already in use');
       }
       throw new InternalServerErrorException();
     }
@@ -53,13 +59,11 @@ export class UserService {
     if (!user) {
       throw new NotFoundException();
     }
-    await this.userRepository.merge(user, data)
+    await this.userRepository.merge(user, data);
     return await this.userRepository.save(user);
   }
 
   async remove(userId: string) {
-    return await this.userRepository.delete({ id: userId })
+    return await this.userRepository.delete({ id: userId });
   }
-
-
 }

@@ -3,7 +3,7 @@ import { UserService } from 'src/user/user.service';
 import { Response } from 'express';
 import { User } from 'src/user/entities/user.entity';
 import { ConfigService } from '@nestjs/config';
-import { TokenPayload } from './interfaces/token-payload.interface';
+import { TokenPayload } from '../common/interfaces/token-payload.interface';
 import { JwtService } from '@nestjs/jwt';
 import { compare, hash } from 'bcryptjs';
 import { SignUpDto } from './dto/signup.dto';
@@ -17,8 +17,12 @@ export class AuthService {
     ) {}
     
     async signup(dto: SignUpDto, response: Response) {
-        const newUser = await this.userService.create(dto);
+        try {
+            const newUser = await this.userService.create(dto);
         await this.login(newUser, response);
+        } catch (error) {
+            throw error
+        }
     }
 
     async login(user: User, response: Response) {
@@ -27,8 +31,9 @@ export class AuthService {
 
         const tokenPayload: TokenPayload = {
             sub: user.id,
+            email: user.email,
         };
-        
+
         const accessToken = this.jwtService.sign(tokenPayload, {
             secret: this.configService.getOrThrow('JWT_ACCESS_SECRET'),
             expiresIn: `${this.configService.getOrThrow('JWT_ACCESS_EXP')}ms`,
@@ -42,15 +47,16 @@ export class AuthService {
 
         response.cookie('Authentication', accessToken, {
             httpOnly: true,
-            secure: this.configService.get('NODE_ENV') === 'production',
+            path: '/',
+            secure: process.env.NODE_ENV === 'production',
             expires: accessTokenExpiry,
         });
         response.cookie('Refresh', refreshToken, {
             httpOnly: true,
-            secure: this.configService.get('NODE_ENV') === 'production',
+            path: '/',
+            secure: process.env.NODE_ENV === 'production',
             expires: refreshTokenExpiry,
         })
-
     }
 
     async validateUser(email: string, password: string) {

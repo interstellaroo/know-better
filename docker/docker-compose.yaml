@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: knowbetter-db
+    environment:
+      POSTGRES_USER: pguser
+      POSTGRES_PASSWORD: pgpass
+      POSTGRES_DB: knowbetter
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
