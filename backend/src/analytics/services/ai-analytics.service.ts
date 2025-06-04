@@ -1,7 +1,6 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { response } from 'express';
 import { AIServiceResponse } from 'src/common/interfaces/ai-service-response.interface';
 import { SentimentAnalysisResponse } from 'src/common/interfaces/sentiment-analysis-response.interface';
 
@@ -42,13 +41,13 @@ export class AIAnalyticsService {
     }
   }
   /**
-   * Sending text to the external API for sentiment analysis using TextBlob
+   * Sending text to the external API for sentiment analysis using TextBlob.
    *
-   * @param data - text for TextBlob to process
-   * @returns an object containing three sentiment indicators
-   *  - polarity: a float between -1.0 and 1.0 indicating emotional tone
-   *  - subjectivity: a float between 0.0 and 1.0 indicating how opinion-based the text is
-   *  - label: descriptive classification - positive, negative or neutral
+   * @param data - text for TextBlob to process.
+   * @returns an object containing three sentiment indicators:
+   *  - polarity: a float between -1.0 and 1.0 indicating emotional tone,
+   *  - subjectivity: a float between 0.0 and 1.0 indicating how opinion-based the text is,
+   *  - label: descriptive classification - positive, negative or neutral.
    */
   async sentimentAnalysis(data: string): Promise<SentimentAnalysisResponse> {
     try {
