@@ -9,7 +9,7 @@ const Logo = () => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true); // unikamy problemów z SSR
+    setMounted(true);
   }, []);
 
   if (!mounted) return null;
